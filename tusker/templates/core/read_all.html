@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+<style>
+	.list-group {
+		max-width: 460px;
+		margin: 4rem auto;
+	}
+	
+	.form-check-input:checked + .form-checked-content {
+		opacity: .5;
+	}
+	
+	.form-check-input-placeholder {
+		border-style: dashed;
+	}
+	[contenteditable]:focus {
+		outline: 0;
+	}
+	
+	.list-group-checkable .list-group-item {
+		cursor: pointer;
+	}
+	.list-group-item-check {
+		position: absolute;
+		clip: rect(0, 0, 0, 0);
+	}
+	.list-group-item-check:hover + .list-group-item {
+		background-color: var(--bs-light);
+	}
+	.list-group-item-check:checked + .list-group-item {
+		color: #fff;
+		background-color: var(--bs-blue);
+	}
+	.list-group-item-check[disabled] + .list-group-item,
+	.list-group-item-check:disabled + .list-group-item {
+		pointer-events: none;
+		filter: none;
+		opacity: .5;
+	}
+	
+	.list-group-radio .list-group-item {
+		cursor: pointer;
+		border-radius: .5rem;
+	}
+	.list-group-radio .form-check-input {
+		z-index: 2;
+		margin-top: -.5em;
+	}
+	.list-group-radio .list-group-item:hover,
+	.list-group-radio .list-group-item:focus {
+		background-color: var(--bs-light);
+	}
+	
+	.list-group-radio .form-check-input:checked + .list-group-item {
+		background-color: var(--bs-body);
+		border-color: var(--bs-blue);
+		box-shadow: 0 0 0 2px var(--bs-blue);
+	}
+	.list-group-radio .form-check-input[disabled] + .list-group-item,
+	.list-group-radio .form-check-input:disabled + .list-group-item {
+		pointer-events: none;
+		filter: none;
+		opacity: .5;
+	}
+	
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'header.html' %}
+
+<div class="d-flex gap-5 justify-content-center">
+	
+	{% for categorie in categories.values %}
+	<div class="list-group mx-0 w-auto">
+		<h2 class="p-2 pb-3 border-bottom rounded text-bg-primary">
+			<i class="bi bi-hourglass-{% cycle 'top' 'split' 'bottom' %}"></i> Tasks in progress
+		</h2>
+		
+		{% if categorie %}
+		{% for task in categorie %}
+		<label class="list-group-item d-flex gap-3">
+			<span class="h3 d-flex align-items-end"><i class="bi bi-journal"></i></span>
+			
+			<span class="pt-1 form-checked-content w-100 text-truncate">
+				<strong class="d-block">{{ task.description|title }}</strong>
+				<small class="d-inline-block text-muted" title="Date task started">
+					<span class="h6"><i class="bi bi-calendar-event"></i></span>
+					<span class="me-3">{{ task.start_date | date:"d/m/Y H:i:s" }}</span>
+				</small>
+				<small class="d-inline-block text-muted" title="Date task ended">
+					<span class="h6"><i class="bi bi-calendar-week"></i></span>
+					<span>{{ task.end_date | date:"d/m/Y H:i:s" | default:"00/00/0000 00:00:00" }}</span>
+				</small>
+			</span>
+			
+			<small class="align-self-center text-nowrap">
+				<a href="{% url 'update' task.id %}" class="text-muted" title="Edit this task"><i class="bi bi-pencil-square"></i></a>
+				<a href="{% url 'delete' task.id %}" class="text-muted" title="Delete this task"><i class="bi bi-trash3"></i></a>
+			</small>
+			
+		</label>
+		{% endfor %}
+		
+		{% else %}
+		<label class="list-group-item d-flex gap-3">
+			<span class="h3 d-flex align-items-end"><i class="bi bi-heartbreak"></i></span>
+			
+			<span class="pt-1 form-checked-content w-100">
+				<strong class="d-block">Seriously!?</strong>
+				<small class="d-inline-block text-muted" title="Date task started">
+					<span>You just broke my heart man, please add a task</span>
+				</small>
+			</span>
+			
+			<small class="align-self-center text-nowrap">
+				<a class="text-muted" href="#" title="Nothing will happen"><i class="bi bi-pencil-square"></i></a>
+				<a class="text-muted" href="#" title="Nothing will happen"><i class="bi bi-trash3"></i></a>
+			</small>
+		</label>
+		{% endif %}
+		
+	</div>
+	{% endfor %}
+	
+</div>
+
+{% if messages %}
+{% for message in messages %}
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+	<div id="messageToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+		{% if message.tags == 'success' %}
+		<div class="toast-header text-bg-success">
+			<strong class="me-auto">Success</strong>
+		{% elif message.tags == 'error' %}
+		<div class="toast-header text-bg-danger">
+			<strong class="me-auto">An error occurs</strong>
+		{% endif %}
+		</div>
+		<div class="toast-body">
+			{{ message }}
+		</div>
+	</div>
+</div>
+{% endfor %}
+{% endif %}
+
+{% endblock %}
+
+
+{% block scripts %}
+
+	{% if messages %}
+	<script type="text/javascript">
+	const messageToast = document.getElementById('messageToast')
+	new bootstrap.Toast(messageToast).show()
+	</script>
+	{% endif %}
+
+{% endblock %}

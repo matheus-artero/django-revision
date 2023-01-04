@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<style>
+	html,
+	body {
+		height: 100%;
+	}
+	
+	body {
+		display: flex;
+		align-items: center;
+		padding-top: 40px;
+		padding-bottom: 40px;
+		background-color: #f5f5f5;
+		
+		/*from class text-center*/
+		text-align: center!important;
+	}
+	
+	.form-signin {
+		max-width: 400px;
+		padding: 15px;
+	}
+	
+	.form-signin .form-floating:focus-within {
+		z-index: 2;
+	}
+	
+	.form-signin input[type="email"] {
+		margin-bottom: -1px;
+		border-bottom-right-radius: 0;
+		border-bottom-left-radius: 0;
+	}
+	
+	.form-signin input[type="password"] {
+		margin-bottom: 10px;
+		border-top-left-radius: 0;
+		border-top-right-radius: 0;
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="form-signin w-100 m-auto">
+	{% if user.is_authenticated %}
+	<h1 class="h3 mb-3 fw-normal"><i class="bi bi-journal-bookmark-fill"></i> You are logged already</h1>
+	<p>Try visit <a href="{% url 'index' %}">home</a> or <a href="{% url 'logout' %}">logout</a>.</p>
+	{% else %}
+	<form method="post">
+		{% csrf_token %}
+		<h1 class="h3 mb-3 fw-normal"><i class="bi bi-journal-bookmark-fill"></i> Welcome to <i>Tusker</i></h1>
+		<h1 class="h5 mb-3 fw-normal">You are just a few clicks away from a wonderful world.</h1>
+		
+		<div class="form-floating">
+			<input type="text" class="form-control" id="inpUsername" name="username">
+			<label for="username">Username</label>
+		</div>
+		<div class="form-floating">
+			<input type="password" class="form-control" id="inpPassword" name="password">
+			<label for="password">Password</label>
+		</div>
+		
+		<input type="hidden" name="next" value="{{ next }}" />
+		<button class="w-100 btn btn-lg btn-primary" type="submit">log in</button>
+	</form>
+	{% endif %}
+</main>
+
+{% if form.errors %}
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+	<div id="messageToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+		<div class="toast-header text-bg-danger">
+			<strong class="me-auto">An error occurs</strong>
+		</div>
+		<div class="toast-body">Username or password wrong. Please try again.</div>
+	</div>
+</div>
+{% endif %}
+
+{% endblock %}
+
+
+{% block scripts %}
+
+{% if form.errors %}
+<script type="text/javascript">
+	const messageToast = document.getElementById('messageToast')
+	new bootstrap.Toast(messageToast).show()
+</script>
+{% endif %}
+
+{% endblock %}

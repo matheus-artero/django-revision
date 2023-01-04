@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'header.html' %}
+
+<div class="position-absolute top-0 bottom-0 start-0 end-0 m-auto h-50 w-25 mx-auto">
+    <span class="d-inline-block w-100 h5 text-center">
+        {% url 'create' as create_url %}
+        {% if request.get_full_path == create_url %}
+        <h1 class="h1"><i class="bi bi-journal-plus"></i></h1>
+        <strong class="d-block"></i> Welcome aboard to a new task!</strong>
+        <small class="d-block fs-6 text-muted">Fill up the form and save it</small>
+        {% else %}
+        <h1 class="h1"><i class="bi bi-journal-text"></i></i></h1>
+        <strong class="d-block"></i> Let's teach some new tricks to an old task!</strong>
+        <small class="d-block fs-6 text-muted">Modify the form as you wish and save it</small>
+        {% endif %}
+    </span>
+
+    <form method="post">
+        {% csrf_token %}
+        <span class="d-inline-block w-100 mt-3 text-center">
+            <div>{{ form.description.label_tag }}</div>
+            {{ form.description }}
+
+            <div class="mt-2">{{ form.status.label_tag }}</div>
+            {{ form.status }}
+        </span>
+        
+        <span class="d-inline-block w-100 mt-3 text-center">
+            <input class="btn btn-primary" type="submit" value="Save">
+            <a href="{% url 'read_all' %}" class="btn btn-secondary">Cancel</a>
+        </span>
+    </form>
+    
+</div>
+{% endblock %}

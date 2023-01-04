@@ -1,0 +1,18 @@
+<header class="p-3 text-bg-dark">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <h1 class="h2 d-flex align-items-center me-lg-auto mb-2 mb-lg-0 text-white text-decoration-none">
+            <i class="bi bi-journal-bookmark-fill">Tusker</i>
+        </h1>
+        
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+            <li><a class="nav-link px-2 text-white" href="{% url 'index' %}">Home <i class="bi bi-house"></i></a></li>
+            <li><a class="nav-link px-2 text-white" href="{% url 'read_all' %}">List tasks <i class="bi bi-journals"></i></a></li>
+            <li><a class="nav-link px-2 text-white" href="{% url 'create' %}">Create task <i class="bi bi-journal-plus"></i></a></li>
+            <li></li>
+        </ul>
+        
+        <div class="text-end">
+            <button type="button" class="btn btn-outline-light me-2"><a class="nav-link px-2" href="{% url 'logout' %}">Logout</a></button>
+        </div>
+    </div>
+</header>

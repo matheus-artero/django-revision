@@ -1,0 +1,34 @@
+services:
+
+  app-service:
+    build: .
+    image: django
+    container_name: container-app
+    ports :
+      - 3000:3000
+    environment:
+      DJANGO_SUPERUSER_USERNAME: admin
+      DJANGO_SUPERUSER_PASSWORD: 1234
+      DJANGO_SUPERUSER_EMAIL: blank@email.com
+    volumes:
+      - .:/usr/src/app
+    command: 'sh app-entrypoint.sh'
+    depends_on:
+      db-service:
+        condition: service_healthy
+  
+  db-service: 
+    image: mysql
+    container_name: container-db
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: toor
+      MYSQL_DATABASE: tusker-db
+    volumes:
+      - ../database-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 10s
+      retries: 5

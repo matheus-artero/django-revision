@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+<style>
+	.feature-icon {
+		width: 4rem;
+		height: 4rem;
+		border-radius: .75rem;
+	}
+	
+	.icon-link > .bi {
+		margin-top: .125rem;
+		margin-left: .125rem;
+		fill: currentcolor;
+		transition: transform .25s ease-in-out;
+	}
+	.icon-link:hover > .bi {
+		transform: translate(.25rem);
+	}
+	
+	.icon-square {
+		width: 3rem;
+		height: 3rem;
+		border-radius: .75rem;
+	}
+	
+	.text-shadow-1 { text-shadow: 0 .125rem .25rem rgba(0, 0, 0, .25); }
+	.text-shadow-2 { text-shadow: 0 .25rem .5rem rgba(0, 0, 0, .25); }
+	.text-shadow-3 { text-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, .25); }
+	
+	.card-cover {
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: cover;
+	}
+	
+	.feature-icon-small {
+		width: 3rem;
+		height: 3rem;
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+{% include 'header.html' %}
+
+<div class="container px-4 py-5" id="featured-3">
+	<h2 class="pb-2 border-bottom">I'll give the rundown. You have...</h2>
+	<div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+		<div class="feature col">
+			<div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
+				<i class="bi bi-hourglass-top"></i>
+			</div>
+			<h3 class="fs-2">{{ open|default:'None' }} open tasks</h3>
+			<p>It's never too late to start something new, check <a href="{% url 'create' %}"></a> to create new tasks.</p>
+		</div>
+		<div class="feature col">
+			<div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
+				<i class="bi bi-hourglass-split"></i>
+			</div>
+			<h3 class="fs-2">{{ progress|default:'None' }} tasks in progress</h3>
+			<p>"Com'on kids! You can do it." - All the time, Supla </p>
+		</div>
+		<div class="feature col">
+			<div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
+				<i class="bi bi-hourglass-bottom"></i>
+			</div>
+			<h3 class="fs-2">{{ closed|default:'None' }} closed tasks</h3>
+			<p>Oh my f****** god! I can believe you finally finished those bastards sons of a b****. Thats right bro, keep going!</p>
+		</div>
+	</div>
+</div>
+
+{% if messages %}
+{% for message in messages %}
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+	<div id="messageToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+		{% if message.tags == 'success' %}
+		<div class="toast-header text-bg-success">
+			<strong class="me-auto">Success</strong>
+		{% elif message.tags == 'error' %}
+		<div class="toast-header text-bg-danger">
+			<strong class="me-auto">An error occurs</strong>
+		{% endif %}
+		</div>
+		<div class="toast-body">
+			{{ message }}
+		</div>
+	</div>
+</div>
+{% endfor %}
+{% endif %}
+
+{% endblock %}
+
+
+{% block scripts %}
+
+	{% if messages %}
+	<script type="text/javascript">
+	const messageToast = document.getElementById('messageToast')
+	new bootstrap.Toast(messageToast).show()
+	</script>
+	{% endif %}
+
+{% endblock %}
