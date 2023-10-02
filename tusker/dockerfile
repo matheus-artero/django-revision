@@ -1,4 +1,6 @@
-FROM python:3.8
+FROM python:3.8-alpine
+
+RUN apk add --update --virtual build-deps gcc musl-dev mariadb-dev
 
 WORKDIR /usr/src/app
 
@@ -6,3 +8,6 @@ COPY requirements.txt ./
 RUN pip install -r requirements.txt
 
 COPY ./ ./
+
+RUN rm -f /var/cache/apk/*
+# RUN apk del build-deps gcc musl-dev
