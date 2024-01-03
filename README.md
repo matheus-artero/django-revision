@@ -1,6 +1,6 @@
 # Tusker
 
-A simple django project to refresh my knowledges in django, mysql and docker containers.
+A simple django todo list project to refresh my knowledges in django, mysql and docker containers.
 
 ## How to execute it
 
